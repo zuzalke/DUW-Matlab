@@ -1,0 +1,84 @@
+function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
+    temp = fopen('CzlonySrodki.txt', 'r');
+    number = str2num(fgetl(temp));
+    for i=1:number
+        dane = str2num(fgetl(temp));
+        CoordinateSystem(i,:)=[dane(1) dane(2) dane(3)];
+    end
+
+    temp = fopen('ParyObrotowe.txt', 'r');
+    number = str2num(fgetl(temp));
+  
+  %global nobr
+  %  nobr=number;       %do tych moich eksperymentów na koncu bylo
+  %  potrzebne
+    
+    for i=1:number
+        dane = str2num(fgetl(temp));
+        czlon1 = dane(1);
+        czlon2 = dane(2);
+        os_x = dane(3);
+        os_y = dane(4);
+        if czlon1==0
+            sa_x = os_x;
+            sa_y = os_y;
+        else
+            sa_x = os_x - CoordinateSystem(czlon1,1);
+            sa_y = os_y - CoordinateSystem(czlon1,2);
+        end
+        if czlon2==0
+            sb_x = os_x;
+            sb_y = os_y;
+        else
+            sb_x = os_x - CoordinateSystem(czlon2,1);
+            sb_y = os_y - CoordinateSystem(czlon2,2);
+        end
+        RevoluteJoint(i,:) = [czlon1 czlon2 sa_x sa_y sb_x sb_y] 
+    end 
+    
+    temp = fopen('ParyPostepowe.txt', 'r');
+    number = str2num(fgetl(temp));
+    
+   %global npos 
+   % npos=number;       %do eksperymentów końcowych
+    
+    for i=1:number
+        dane = str2num(fgetl(temp));
+        czlon1 = dane(1);
+        czlon2 = dane(2);
+        fi = 0;
+        punktA = [dane(3) dane(4)];
+        punktB = [dane(5) dane(6)];
+        if czlon1==0
+            punktA = [0 0];
+        else
+            sa = punktA - CoordinateSystem(czlon1);
+        end
+        if czlon2==0
+            punktB = [0 0];
+        else
+            sb = punktB - CoordinateSystem(czlon1);
+        end
+        v = punktA - punktB;
+        v = v/norm(v);
+        v = v*Rot(pi/2);
+        PrismaticJoint(i,:) = [czlon1 czlon2 fi v sa sb]
+    end
+ %%%%%TUTAJ PRÓBUJĘ ROBIĆ RZECZY ALE A) NIE WYCHODZI MI - NIE WIEM JUŻ SKĄD WZIĄĆ q B) MOŻE LEPIEJ TO WRZUCIĆ W INNĄ FUNKCJĘ C) NIE JESTEM PEWNA PRAWIDŁOWOŚCI (inspo: Marek Wojtyra, wykład)  
+ 
+ %   k=0                         %licznik równań więzów
+ %   F=zeros(2*(nobr+npos),1)    %deklaracja rozmiaru wektora
+    
+   
+ %   for m=1:nobr
+ %       i=3*RevoluteJoint(m,1);
+ %       j=3*RevoluteJoint(m,2);
+ %       if i == 0
+ %           F(k+1:k+2,1)=RevoluteJoint(m,3:4)-q(j-2:j-1,1)-Rot(q(j))*RevoluteJoint(m,5:6);
+ %       elseif j == 0
+ %           F(k+1:k+2,1)=q(i-2:i-1,1)+Rot(q(i))*RevoluteJoint(m,3:4)-RevoluteJoint(m,5:6);
+ %       else
+ %           F(k+1:k+2,1)=q(i-2:i-1,1)+Rot(q(i))*RevoluteJoint(m,3:4)-q(j-2:j-1,1)-Rot(q(j))*RevoluteJoint(m,5:6);
+ %       end
+ %       k=k+2;
+end
