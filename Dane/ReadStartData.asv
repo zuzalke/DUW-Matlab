@@ -25,13 +25,13 @@ function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
             fi2 = 0;
         else
             ukladWspolrz2 = CoordinateSystem(czlon2,1:2);
-            fi2 = CoordinateSystem(czlon2,3);
+            fi2 = CoordinateSystem(czlon1,3);
         end
         R1 = Rot(fi1);
         R2 = Rot(fi2);
         sa = OsObrotu - ukladWspolrz1;
         sb = OsObrotu - ukladWspolrz2;
-        RevoluteJoint(i,:) = [czlon1 czlon2 sa sb]; 
+        RevoluteJoint(i,:) = [czlon1 czlon2 sa_x sa_y sb_x sb_y]; 
     end 
     
     temp = fopen('ParyPostepowe.txt', 'r');
@@ -54,16 +54,9 @@ function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
             ukladWspolrz2 = [0 0];
             fi2 = 0;
         else
-            ukladWspolrz2 = CoordinateSystem(czlon2,1:2);
-            fi2 = CoordinateSystem(czlon2,3);
-        end
-        R1 = Rot(fi1);
-        R2 = Rot(fi2);
         v = punktA - punktB;
         v = v/norm(v);
         v = v*Rot(pi/2);
-        sa = punktA - ukladWspolrz1;
-        sb = punktB - ukladWspolrz2;
         PrismaticJoint(i,:) = [czlon1 czlon2 fi v sa sb];
     end
 end
