@@ -1,12 +1,12 @@
 function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
-    temp = fopen('CzlonySrodki.txt', 'r');
+    temp = fopen('Dane/UkladyWspolrzednych.txt', 'r');
     number = str2num(fgetl(temp));
     for i=1:number
         dane = str2num(fgetl(temp));
         CoordinateSystem(i,:)=[dane(1) dane(2) dane(3)];
     end
 
-    temp = fopen('ParyObrotowe.txt', 'r');
+    temp = fopen('Dane/ParyObrotowe.txt', 'r');
     number = str2num(fgetl(temp));
     for i=1:number
         dane = str2num(fgetl(temp));
@@ -34,7 +34,7 @@ function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
         RevoluteJoint(i,:) = [czlon1 czlon2 sa sb]; 
     end 
     
-    temp = fopen('ParyPostepowe.txt', 'r');
+    temp = fopen('Dane/ParyPostepowe.txt', 'r');
     number = str2num(fgetl(temp));
     for i=1:number
         dane = str2num(fgetl(temp));
@@ -65,5 +65,6 @@ function [CoordinateSystem, RevoluteJoint, PrismaticJoint] = CzlonySrodki();
         sa = punktA - ukladWspolrz1;
         sb = punktB - ukladWspolrz2;
         PrismaticJoint(i,:) = [czlon1 czlon2 fi v sa sb];
+        PrismaticEnds(i,:) = [punktA, punktB];
     end
 end
