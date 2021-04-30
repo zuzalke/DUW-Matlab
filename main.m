@@ -1,0 +1,1 @@
+[UkladyWspolrzednych, ParyObrotowe, ParyPostepowe] = ReadStartData;
