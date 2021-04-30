@@ -1,7 +1,6 @@
 function Fq=Jakobian(q)
-%ALERT PLIK NIEDOKONCZONY
-%NA PODST. PREZENTACJI Z ZAJ势 ORAZ SKRYPTU - STRONY 47 i 48
-
+%ALERT PLIK NIEDOKONCZONY - BRAK ROWNAN DLA PAR POSTEPOWYCH!
+%
  temp = fopen('Dane/UkladyWspolrzednych.txt', 'r');
  ncz = str2num(fgetl(temp)); 
 
@@ -28,9 +27,6 @@ for m=1:nobr
     end
     k=k+2;
 end
-
-%IMPROWIZACJA NA PODSTAWIE STRONY 48 ZE SKRYPTU: (nadal nie wiem, sk筪
-%wzi规 vj)
 for m=1:npos
     i=3*PrismaticJoint(m,1);
     j=3*PrismaticJoint(m,2);
@@ -38,7 +34,6 @@ for m=1:npos
         Fq(k+1,i-2:i)=[zeros(1,2) 1];
         Fq(k+1,j-2:j)=[zeros(1,2) -1];
         
-        Fq(k+2,i-2:i)=[-(Rot(q(j))*vj)' -(Rot(q(j))*vj)'*Om*Rot(q(i))*PrismaticJoint(m,3:4)]; %sk筪 wzi规 vj - odwieczne pytanie
-        Fq(k+2,j-2:j)=[(Rot(q(j))*vj)' -(Rot(q(j))*vj)'*Om*(q(j-2:j-1)-q(i-2:i-1)-Rot(q(i))*PrismaticJoint(m,3:4))];
-   
+        Fq(k+2,i-2:i)=[-(Rot(q(j))*vj)' -(Rot(q(j))*vj)'*Om*Rot(q(i))*PrismaticJoint(m,];     %sk筪 wzi规 vj - odwieczne pytanie
+    %???? PARY POST蔖OWE ???? NIE WIEM JAK ;-;
 end
